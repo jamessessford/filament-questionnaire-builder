@@ -4,12 +4,9 @@ namespace PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Livewire\Component as Livewire;
 use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\QuestionSetResource\Pages;
@@ -88,8 +85,9 @@ class QuestionSetResource extends Resource
                                         Forms\Components\Select::make('depends_with')
                                             ->options(function (Forms\Get $get, Livewire $livewire) {
                                                 $state = $get('depends_on');
-                                                if (!$state) return [];
-
+                                                if (! $state) {
+                                                    return [];
+                                                }
 
                                                 $options = collect($livewire->data['data'])
                                                     ->filter(function ($block) use ($state) {
@@ -198,7 +196,7 @@ class QuestionSetResource extends Resource
                                         self::getHintInput(),
                                     ]),
                             ]),
-                    ])
+                    ]),
             ]);
     }
 
@@ -301,7 +299,7 @@ class QuestionSetResource extends Resource
                     ->reactive(),
                 Forms\Components\TextInput::make('hint')
                     ->visible(fn (Forms\Get $get) => $get('has_hint') == true)
-                    ->columnSpanFull()
+                    ->columnSpanFull(),
             ]);
     }
 }

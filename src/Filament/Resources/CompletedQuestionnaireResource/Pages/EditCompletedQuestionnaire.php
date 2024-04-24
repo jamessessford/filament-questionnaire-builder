@@ -2,9 +2,9 @@
 
 namespace PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource\Pages;
 
-use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource;
 
 class EditCompletedQuestionnaire extends EditRecord
 {

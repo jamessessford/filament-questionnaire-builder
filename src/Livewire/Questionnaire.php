@@ -41,14 +41,14 @@ abstract class Questionnaire extends Component implements HasForms
                     ->heading($this->questionnaire->title)
                     ->schema([
                         $this->constructWizard(),
-                    ])
+                    ]),
             ]);
     }
 
     protected function constructWizard(): Forms\Components\Wizard
     {
         $steps = [];
-        foreach($this->questionnaire->data as $questionSetId) {
+        foreach ($this->questionnaire->data as $questionSetId) {
             $questionSet = QuestionSet::where('id', $questionSetId)->sole();
             $steps[] = Forms\Components\Wizard\Step::make($questionSet->title)
                 ->schema(
@@ -92,12 +92,14 @@ abstract class Questionnaire extends Component implements HasForms
                         if ($config['depends_on']) {
                             return $get($config['depends_on']) == $config['depends_with'];
                         }
+
                         return false;
                     })
                     ->hidden(function (Forms\Get $get) use ($config) {
                         if ($config['depends_on']) {
                             return $get($config['depends_on']) != $config['depends_with'];
                         }
+
                         return true;
                     })
                     ->reactive()

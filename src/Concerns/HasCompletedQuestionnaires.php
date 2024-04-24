@@ -9,7 +9,8 @@ trait HasCompletedQuestionnaires
 {
     public function completedQuestionnaires(): HasMany
     {
-        return $this->hasMany(CompletedQuestionnaire::class,
+        return $this->hasMany(
+            CompletedQuestionnaire::class,
             get_class($this) === config('filament-questionnaire-builder.tenant_model') ? 'tenant_id' : 'user_id',
             'id'
         );

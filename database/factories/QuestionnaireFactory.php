@@ -16,4 +16,3 @@ class QuestionnaireFactory extends Factory
         ];
     }
 }
-

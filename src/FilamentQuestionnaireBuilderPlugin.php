@@ -25,7 +25,7 @@ class FilamentQuestionnaireBuilderPlugin implements Plugin
             ->navigationGroups([
                 NavigationGroup::make('Questionnaires')
                     ->label('Questionnaires')
-                    ->icon('heroicon-o-question-mark-circle')
+                    ->icon('heroicon-o-question-mark-circle'),
             ]);
     }
 

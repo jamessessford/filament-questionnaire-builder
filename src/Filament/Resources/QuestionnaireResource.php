@@ -5,14 +5,11 @@ namespace PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
-use Livewire\Component as Livewire;
 use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\QuestionnaireResource\Pages;
 use PreferredManagement\FilamentQuestionnaireBuilder\Models\QuestionSet;
 
@@ -52,9 +49,9 @@ class QuestionnaireResource extends Resource
                         Forms\Components\Select::make('data')
                             ->multiple()
                             ->label('Question Sets')
-                            ->options(function() {
+                            ->options(function () {
                                 return QuestionSet::query()
-                                    ->where(function(Builder $query) {
+                                    ->where(function (Builder $query) {
                                         $query
                                             ->where('user_id', request()->user()->id)
                                             ->orWhere('tenant_id', Filament::getTenant()->id);
@@ -62,8 +59,8 @@ class QuestionnaireResource extends Resource
                                     ->get()
                                     ->pluck('title', 'id');
                             })
-                            ->required()
-                    ])
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -166,7 +163,7 @@ class QuestionnaireResource extends Resource
                     ->reactive(),
                 Forms\Components\TextInput::make('hint')
                     ->visible(fn (Forms\Get $get) => $get('has_hint') == true)
-                    ->columnSpanFull()
+                    ->columnSpanFull(),
             ]);
     }
 }

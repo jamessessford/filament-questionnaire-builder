@@ -16,4 +16,3 @@ class CompletedQuestionnaireFactory extends Factory
         ];
     }
 }
-

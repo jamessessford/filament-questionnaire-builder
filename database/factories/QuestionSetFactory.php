@@ -16,4 +16,3 @@ class QuestionSetFactory extends Factory
         ];
     }
 }
-

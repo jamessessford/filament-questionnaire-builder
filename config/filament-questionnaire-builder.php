@@ -9,8 +9,8 @@ return [
             'name' => 'questionnaires',
         ],
         'completed-questionnaires' => [
-            'name' => 'completed_questionnaires'
-        ]
+            'name' => 'completed_questionnaires',
+        ],
     ],
 
     'models' => [

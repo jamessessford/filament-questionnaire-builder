@@ -2,9 +2,8 @@
 
 namespace PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource\Pages;
 
-use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource;
 
 class ListCompletedQuestionnaires extends ListRecords
 {
