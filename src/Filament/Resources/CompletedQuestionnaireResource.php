@@ -42,7 +42,7 @@ class CompletedQuestionnaireResource extends Resource
                 Forms\Components\Section::make('Questionnaire')
                     ->schema([
                         Forms\Components\Placeholder::make('title')
-                            ->content(fn(Model $record) => $record->questions['title']),
+                            ->content(fn (Model $record) => $record->questions['title']),
                         Forms\Components\Repeater::make('questions.steps')
                             ->label('')
                             ->deletable(false)
@@ -50,7 +50,7 @@ class CompletedQuestionnaireResource extends Resource
                             ->schema([
                                 Forms\Components\Placeholder::make('title')
                                     ->label('Step')
-                                    ->content(fn(string $state) => $state),
+                                    ->content(fn (string $state) => $state),
                                 Forms\Components\Repeater::make('step')
                                     ->reorderable(false)
                                     ->deletable(false)
@@ -59,23 +59,23 @@ class CompletedQuestionnaireResource extends Resource
                                         Forms\Components\Grid::make()
                                             ->schema([
                                                 Forms\Components\Placeholder::make('data.label')
-                                                    ->label(function(Forms\Get $get) {
-                                                        return match($get('type')) {
+                                                    ->label(function (Forms\Get $get) {
+                                                        return match ($get('type')) {
                                                             'statement' => 'Statement',
                                                             default => 'Question'
                                                         };
                                                     })
-                                                    ->content(fn(string $state) => $state),
+                                                    ->content(fn (string $state) => $state),
                                                 Forms\Components\Placeholder::make('data.name')
-                                                    ->label(function(Forms\Get $get) {
-                                                        return match($get('type')) {
+                                                    ->label(function (Forms\Get $get) {
+                                                        return match ($get('type')) {
                                                             'statement' => 'Body',
                                                             'file' => 'Link',
                                                             default => 'Answer'
                                                         };
                                                     })
                                                     // ->content(fn($state) => $state)
-                                                    ->content(function($state, Model $record, Forms\Set $set, Forms\Get $get) {
+                                                    ->content(function ($state, Model $record, Forms\Set $set, Forms\Get $get) {
 
                                                         if (! $state) {
                                                             return '';
@@ -93,8 +93,8 @@ class CompletedQuestionnaireResource extends Resource
                                                                     <a href="/storage/{$state}" target="_blank">{$state}</a>
                                                                     html;
                                                                 } else {
-                                                                    $newState = "";
-                                                                    foreach($state as $s) {
+                                                                    $newState = '';
+                                                                    foreach ($state as $s) {
                                                                         $newState .= <<<html
                                                                     <a href="/storage/{$s}" target="_blank">{$s}</a>
                                                                     html;
@@ -114,16 +114,16 @@ class CompletedQuestionnaireResource extends Resource
 
                                                             return $newState;
                                                         }
-                                                    })
-                                            ])
-                                            // ->hidden(fn(Model $record, Forms\Get $get) => ! array_key_exists($get('data.name'), $record->answers['data']))
+                                                    }),
+                                            ]),
+                                        // ->hidden(fn(Model $record, Forms\Get $get) => ! array_key_exists($get('data.name'), $record->answers['data']))
                                     ])
-                                    ->addable(false)
+                                    ->addable(false),
                             ])
-                            ->addable(false)
+                            ->addable(false),
                     ])
                     ->collapsible()
-                    ->hidden(fn(Forms\Get $get) => is_null($get('questions')))
+                    ->hidden(fn (Forms\Get $get) => is_null($get('questions'))),
             ]);
     }
 

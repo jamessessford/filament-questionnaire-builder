@@ -45,8 +45,8 @@ class CompletedQuestionnaire extends Model
     {
         return $this->belongsTo(
             Questionnaire::class,
-            config('filament-questionnaire-builder.tables.questionnaires.name') . "_id",
-            "id"
+            config('filament-questionnaire-builder.tables.questionnaires.name') . '_id',
+            'id'
         );
     }
 }

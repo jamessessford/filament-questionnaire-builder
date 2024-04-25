@@ -46,7 +46,7 @@ class Questionnaire extends Model
     {
         return $this->hasMany(
             CompletedQuestionnaire::class,
-            config('filament-questionnaire-builder.tables.questionnaires.name') . "_id",
+            config('filament-questionnaire-builder.tables.questionnaires.name') . '_id',
             'id',
         );
     }

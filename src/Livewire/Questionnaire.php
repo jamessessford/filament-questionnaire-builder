@@ -74,7 +74,7 @@ abstract class Questionnaire extends Component implements HasForms
                 ->schema(
                     $this->constructStep($questionSet->data)
                 )
-                ->statePath("data");
+                ->statePath('data');
         }
 
         $wizard = Forms\Components\Wizard::make()
@@ -103,46 +103,46 @@ abstract class Questionnaire extends Component implements HasForms
             return match ($field['type']) {
                 'text' => Forms\Components\TextInput::make($config['name'])
                     ->label($config['label'])
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
                 'radio' => Forms\Components\Radio::make($config['name'])
                     ->label($config['label'])
                     ->options($config['options'])
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
                 'select' => Forms\Components\Select::make($config['name'])
                     ->label($config['label'])
                     ->options($config['options'])
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
                 'checkbox' => Forms\Components\Checkbox::make($config['name'])
                     ->label($config['label'])
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
                 'file' => Forms\Components\FileUpload::make($config['name'])
                     ->label($config['label'])
                     ->multiple($config['is_multiple'])
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
                 'statement' => Forms\Components\Placeholder::make($config['name'])
                     ->label($config['label'])
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->content($config['value']),
                 'toggle' => Forms\Components\Toggle::make($config['name'])
                     ->label($config['label'])
-                    ->accepted(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->required(fn(Forms\Get $get) => $this->potentiallyRequired($config, $get))
-                    ->hidden(fn(Forms\Get $get) => $this->potentiallyHidden($config, $get))
+                    ->accepted(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->required(fn (Forms\Get $get) => $this->potentiallyRequired($config, $get))
+                    ->hidden(fn (Forms\Get $get) => $this->potentiallyHidden($config, $get))
                     ->helperText($config['hint'])
                     ->reactive(),
             };

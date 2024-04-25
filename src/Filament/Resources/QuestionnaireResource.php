@@ -61,9 +61,9 @@ class QuestionnaireResource extends Resource
                                             ->get()
                                             ->pluck('title', 'id');
                                     })
-                                    ->required()
+                                    ->required(),
                             ])
-                            ->minItems(1)
+                            ->minItems(1),
                     ]),
             ]);
     }

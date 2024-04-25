@@ -55,7 +55,7 @@ class QuestionSetResource extends Resource
                                             return 'Text Input';
                                         }
 
-                                        return "Free Text: " . $state['label'] ?? 'Untitled Text Input';
+                                        return 'Free Text: ' . $state['label'] ?? 'Untitled Text Input';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -70,7 +70,7 @@ class QuestionSetResource extends Resource
                                             return 'Select';
                                         }
 
-                                        return "Select: " . $state['label'] ?? 'Untitled Select';
+                                        return 'Select: ' . $state['label'] ?? 'Untitled Select';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -100,7 +100,7 @@ class QuestionSetResource extends Resource
                                             return 'Radio';
                                         }
 
-                                        return "Radio: " . $state['label'] ?? 'Untitled Radio';
+                                        return 'Radio: ' . $state['label'] ?? 'Untitled Radio';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -129,7 +129,7 @@ class QuestionSetResource extends Resource
                                             return 'Checkbox';
                                         }
 
-                                        return "Checkbox: " . $state['label'] ?? 'Untitled Checkbox';
+                                        return 'Checkbox: ' . $state['label'] ?? 'Untitled Checkbox';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -144,7 +144,7 @@ class QuestionSetResource extends Resource
                                             return 'File Upload';
                                         }
 
-                                        return "File Upload: " . $state['label'] ?? 'Untitled File Upload';
+                                        return 'File Upload: ' . $state['label'] ?? 'Untitled File Upload';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -163,7 +163,7 @@ class QuestionSetResource extends Resource
                                             return 'Statement';
                                         }
 
-                                        return "Statement: " . $state['label'] ?? 'Untitled Statement';
+                                        return 'Statement: ' . $state['label'] ?? 'Untitled Statement';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -178,7 +178,7 @@ class QuestionSetResource extends Resource
                                             return 'Toggle';
                                         }
 
-                                        return "Toggle: " . $state['label'] ?? 'Untitled Toggle';
+                                        return 'Toggle: ' . $state['label'] ?? 'Untitled Toggle';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -327,7 +327,7 @@ class QuestionSetResource extends Resource
                                 return collect($options[0])->pluck('label', 'value');
                             }),
                     ])
-                    ->visible(fn (Forms\Get $get) => $get('has_dependencies') == true)
+                    ->visible(fn (Forms\Get $get) => $get('has_dependencies') == true),
             ]);
     }
 }
