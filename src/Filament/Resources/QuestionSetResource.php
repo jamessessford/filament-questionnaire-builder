@@ -55,57 +55,14 @@ class QuestionSetResource extends Resource
                                             return 'Text Input';
                                         }
 
-                                        return $state['label'] ?? 'Untitled Text Input';
+                                        return "Free Text: " . $state['label'] ?? 'Untitled Text Input';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
                                         Forms\Components\Checkbox::make('is_required'),
                                         self::getHintInput(),
+                                        self::getDepenencyInput(),
                                     ]),
-                                Forms\Components\Builder\Block::make('dependant_text')
-                                    ->icon('heroicon-o-cursor-arrow-rays')
-                                    ->label(function (?array $state): string {
-                                        if ($state === null) {
-                                            return 'Dependant Text';
-                                        }
-
-                                        return $state['label'] ?? 'Untitled Dependant Text';
-                                    })
-                                    ->schema([
-                                        self::getFieldNameInput(),
-                                        Forms\Components\Select::make('depends_on')
-                                            ->reactive()
-                                            ->options(function (Livewire $livewire) {
-                                                return collect($livewire->data['data'])
-                                                    ->filter(function ($block) {
-                                                        return in_array($block['type'], ['radio', 'select']);
-                                                    })
-                                                    ->pluck('data.label', 'data.name');
-                                            }),
-                                        Forms\Components\Select::make('depends_with')
-                                            ->options(function (Forms\Get $get, Livewire $livewire) {
-                                                $state = $get('depends_on');
-                                                if (! $state) {
-                                                    return [];
-                                                }
-
-                                                $options = collect($livewire->data['data'])
-                                                    ->filter(function ($block) use ($state) {
-                                                        return $block['data']['name'] === $state;
-                                                    })
-                                                    ->pluck('data.options');
-
-                                                return collect($options[0])->pluck('label', 'value');
-                                            }),
-                                        self::getHintInput(),
-                                    ])
-                                    ->hidden(function (Livewire $livewire) {
-                                        return collect($livewire->data['data'])
-                                            ->filter(function ($block) {
-                                                return in_array($block['type'], ['radio', 'select']);
-                                            })
-                                            ->count() < 1;
-                                    }),
                                 Forms\Components\Builder\Block::make('select')
                                     ->icon('heroicon-o-chevron-up-down')
                                     ->label(function (?array $state): string {
@@ -113,7 +70,7 @@ class QuestionSetResource extends Resource
                                             return 'Select';
                                         }
 
-                                        return $state['label'] ?? 'Untitled Select';
+                                        return "Select: " . $state['label'] ?? 'Untitled Select';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -134,6 +91,7 @@ class QuestionSetResource extends Resource
                                         Forms\Components\Checkbox::make('is_multiple'),
                                         Forms\Components\Checkbox::make('is_required'),
                                         self::getHintInput(),
+                                        self::getDepenencyInput(),
                                     ]),
                                 Forms\Components\Builder\Block::make('radio')
                                     ->icon('heroicon-o-arrow-down-circle')
@@ -142,7 +100,7 @@ class QuestionSetResource extends Resource
                                             return 'Radio';
                                         }
 
-                                        return $state['label'] ?? 'Untitled Radio';
+                                        return "Radio: " . $state['label'] ?? 'Untitled Radio';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -162,6 +120,7 @@ class QuestionSetResource extends Resource
                                             ->columns(12),
                                         Forms\Components\Checkbox::make('is_required'),
                                         self::getHintInput(),
+                                        self::getDepenencyInput(),
                                     ]),
                                 Forms\Components\Builder\Block::make('checkbox')
                                     ->icon('heroicon-o-check-circle')
@@ -170,12 +129,13 @@ class QuestionSetResource extends Resource
                                             return 'Checkbox';
                                         }
 
-                                        return $state['label'] ?? 'Untitled Checkbox';
+                                        return "Checkbox: " . $state['label'] ?? 'Untitled Checkbox';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
                                         Forms\Components\Checkbox::make('is_required'),
                                         self::getHintInput(),
+                                        self::getDepenencyInput(),
                                     ]),
                                 Forms\Components\Builder\Block::make('file')
                                     ->icon('heroicon-o-photo')
@@ -184,7 +144,7 @@ class QuestionSetResource extends Resource
                                             return 'File Upload';
                                         }
 
-                                        return $state['label'] ?? 'Untitled File Upload';
+                                        return "File Upload: " . $state['label'] ?? 'Untitled File Upload';
                                     })
                                     ->schema([
                                         self::getFieldNameInput(),
@@ -194,6 +154,37 @@ class QuestionSetResource extends Resource
                                                 Forms\Components\Checkbox::make('is_required'),
                                             ]),
                                         self::getHintInput(),
+                                        self::getDepenencyInput(),
+                                    ]),
+                                Forms\Components\Builder\Block::make('statement')
+                                    ->icon('heroicon-o-clipboard')
+                                    ->label(function (?array $state): string {
+                                        if ($state === null) {
+                                            return 'Statement';
+                                        }
+
+                                        return "Statement: " . $state['label'] ?? 'Untitled Statement';
+                                    })
+                                    ->schema([
+                                        self::getFieldNameInput(),
+                                        Forms\Components\Textarea::make('value')
+                                            ->label('Statement'),
+                                        self::getDepenencyInput(),
+                                    ]),
+                                Forms\Components\Builder\Block::make('toggle')
+                                    ->icon('heroicon-o-check')
+                                    ->label(function (?array $state): string {
+                                        if ($state === null) {
+                                            return 'Toggle';
+                                        }
+
+                                        return "Toggle: " . $state['label'] ?? 'Untitled Toggle';
+                                    })
+                                    ->schema([
+                                        self::getFieldNameInput(),
+                                        Forms\Components\Checkbox::make('is_required'),
+                                        self::getHintInput(),
+                                        self::getDepenencyInput(),
                                     ]),
                             ]),
                     ]),
@@ -300,6 +291,43 @@ class QuestionSetResource extends Resource
                 Forms\Components\TextInput::make('hint')
                     ->visible(fn (Forms\Get $get) => $get('has_hint') == true)
                     ->columnSpanFull(),
+            ]);
+    }
+
+    public static function getDepenencyInput(): Forms\Components\Grid
+    {
+        return Forms\Components\Grid::make()
+            ->schema([
+                Forms\Components\Checkbox::make('has_dependencies')
+                    ->reactive(),
+                Forms\Components\Grid::make()
+                    ->schema([
+                        Forms\Components\Select::make('depends_on')
+                            ->reactive()
+                            ->options(function (Livewire $livewire) {
+                                return collect($livewire->data['data'])
+                                    ->filter(function ($block) {
+                                        return in_array($block['type'], ['radio', 'select']);
+                                    })
+                                    ->pluck('data.label', 'data.name');
+                            }),
+                        Forms\Components\Select::make('depends_with')
+                            ->options(function (Forms\Get $get, Livewire $livewire) {
+                                $state = $get('depends_on');
+                                if (! $state) {
+                                    return [];
+                                }
+
+                                $options = collect($livewire->data['data'])
+                                    ->filter(function ($block) use ($state) {
+                                        return $block['data']['name'] === $state;
+                                    })
+                                    ->pluck('data.options');
+
+                                return collect($options[0])->pluck('label', 'value');
+                            }),
+                    ])
+                    ->visible(fn (Forms\Get $get) => $get('has_dependencies') == true)
             ]);
     }
 }

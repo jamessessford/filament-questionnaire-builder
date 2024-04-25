@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Livewire\Component as Livewire;
 use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\QuestionnaireResource\Pages;
 use PreferredManagement\FilamentQuestionnaireBuilder\Models\QuestionSet;
 
@@ -46,20 +47,23 @@ class QuestionnaireResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->columnSpanFull(),
-                        Forms\Components\Select::make('data')
-                            ->multiple()
-                            ->label('Question Sets')
-                            ->options(function () {
-                                return QuestionSet::query()
-                                    ->where(function (Builder $query) {
-                                        $query
-                                            ->where('user_id', request()->user()->id)
-                                            ->orWhere('tenant_id', Filament::getTenant()->id);
+                        Forms\Components\Repeater::make('data')
+                            ->schema([
+                                Forms\Components\Select::make('question_set')
+                                    ->label('Question Set')
+                                    ->options(function (Livewire $livewire) {
+                                        return QuestionSet::query()
+                                            ->where(function (Builder $query) {
+                                                $query
+                                                    ->where('user_id', request()->user()->id)
+                                                    ->orWhere('tenant_id', Filament::getTenant()->id);
+                                            })
+                                            ->get()
+                                            ->pluck('title', 'id');
                                     })
-                                    ->get()
-                                    ->pluck('title', 'id');
-                            })
-                            ->required(),
+                                    ->required()
+                            ])
+                            ->minItems(1)
                     ]),
             ]);
     }

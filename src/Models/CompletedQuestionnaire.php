@@ -11,9 +11,9 @@ class CompletedQuestionnaire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'tags',
-        'data',
+        'questions',
+        'answers',
+        'questionnaire_id',
         'tenant_id',
         'user_id',
     ];
@@ -21,8 +21,8 @@ class CompletedQuestionnaire extends Model
     protected function casts(): array
     {
         return [
-            'tags' => 'array',
-            'data' => 'array',
+            'questions' => 'array',
+            'answers' => 'array',
         ];
     }
 
@@ -39,5 +39,14 @@ class CompletedQuestionnaire extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(app()->make('filament-questionnaire-builder.user_model'));
+    }
+
+    public function questionnaire(): BelongsTo
+    {
+        return $this->belongsTo(
+            Questionnaire::class,
+            config('filament-questionnaire-builder.tables.questionnaires.name') . "_id",
+            "id"
+        );
     }
 }

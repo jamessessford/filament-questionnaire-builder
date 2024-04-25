@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::create(strval(config("filament-questionnaire-builder.tables.completed-questionnaires.name")), function (Blueprint $table) {
             $table->id();
 
-            $table->string('title')->unique();
-            $table->json('tags')->nullable()->default(null);
-            $table->json('data');
+            $table->json('questions');
+            $table->json('answers');
 
+            $table->foreignId(config("filament-questionnaire-builder.tables.questionnaires.name") . "_id");
             $table->foreignId('user_id')->nullable()->default(null);
             $table->foreignId('tenant_id')->nullable()->default(null);
 

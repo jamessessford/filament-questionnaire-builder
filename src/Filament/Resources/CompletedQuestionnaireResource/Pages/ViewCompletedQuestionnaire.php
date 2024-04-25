@@ -1,65 +1,62 @@
 <?php
 
-//  Have a look if we can do video as well as img/pdf etc;
+namespace PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource\Pages;
 
-namespace PreferredManagement\FilamentQuestionnaireBuilder\Livewire;
-
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
+use PreferredManagement\FilamentQuestionnaireBuilder\Filament\Resources\CompletedQuestionnaireResource;
+use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
-use Livewire\Component;
-use PreferredManagement\FilamentQuestionnaireBuilder\Models\Questionnaire as QuestionnaireModel;
+use PreferredManagement\FilamentQuestionnaireBuilder\Models\CompletedQuestionnaire;
+use PreferredManagement\FilamentQuestionnaireBuilder\Models\Questionnaire;
 use PreferredManagement\FilamentQuestionnaireBuilder\Models\QuestionSet;
 
-abstract class Questionnaire extends Component implements HasForms
+class ViewCompletedQuestionnaire extends ViewRecord
 {
-    use InteractsWithForms;
+    protected static string $resource = CompletedQuestionnaireResource::class;
 
-    public QuestionnaireModel $questionnaire;
-
-    public string $submitAction = 'save';
-
-    public ?array $data = [];
+    public Questionnaire $questionnaire;
 
     public array $questions = [];
 
-    public function mount(): void
+    public function booted()
     {
+        $this->questionnaire = $this->record->questionnaire;
+
         $this->questions = [
             'title' => $this->questionnaire->title,
             'steps' => [],
         ];
-
-        $this->form->fill();
     }
 
-    public function save(): void
+    protected function getHeaderActions(): array
     {
-        $answers = $this->form->getState();
+        return [
+            Actions\Action::make('edit')
+                ->label('Update Answers')
+                ->slideOver()
+                ->fillForm(function() {
+                    return $this->record->answers['data'];
+                })
+                ->form([
+                    Forms\Components\Section::make('form')
+                        ->heading($this->questionnaire->title)
+                        ->schema([
+                            $this->constructWizard(),
+                        ]),
+                ])
+                ->action(function(array $data) {
+                    $answers = $data;
 
-        $this->questionnaire->completedQuestionnaires()->create([
-            'user_id' => request()->user()?->id,
-            'tenant_id' => $this->questionnaire->tenant_id,
-            'questions' => $this->questions,
-            'answers' => $answers,
-        ]);
+                    $this->record->update([
+                        'questions' => $this->questions,
+                        'answers' => ['data' => $answers],
+                    ]);
 
-        $this->redirect("/questionnaire/{$this->questionnaire->id}");
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('form')
-                    ->heading($this->questionnaire->title)
-                    ->schema([
-                        $this->constructWizard(),
-                    ]),
-            ]);
+                    $this->redirect(CompletedQuestionnaireResource::getUrl('view', ['record' => $this->record]));
+                })
+        ];
     }
 
     protected function constructWizard(): Forms\Components\Wizard
@@ -73,21 +70,11 @@ abstract class Questionnaire extends Component implements HasForms
             $steps[] = Forms\Components\Wizard\Step::make($questionSet->title)
                 ->schema(
                     $this->constructStep($questionSet->data)
-                )
-                ->statePath("data");
+                );
         }
 
         $wizard = Forms\Components\Wizard::make()
-            ->steps($steps)
-            ->submitAction(new HtmlString(Blade::render(<<<BLADE
-                    <x-filament::button
-                        type="button"
-                        size="sm"
-                        wire:click="{$this->submitAction}"
-                    >
-                        Submit
-                    </x-filament::button>
-                BLADE)));
+            ->steps($steps);
 
         return $wizard;
     }
@@ -173,10 +160,5 @@ abstract class Questionnaire extends Component implements HasForms
         }
 
         return false;
-    }
-
-    public function render()
-    {
-        return view('filament-questionnaire-builder::questionnaire');
     }
 }

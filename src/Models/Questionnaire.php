@@ -5,6 +5,7 @@ namespace PreferredManagement\FilamentQuestionnaireBuilder\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Questionnaire extends Model
 {
@@ -39,5 +40,14 @@ class Questionnaire extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(app()->make('filament-questionnaire-builder.user_model'));
+    }
+
+    public function completedQuestionnaires(): HasMany
+    {
+        return $this->hasMany(
+            CompletedQuestionnaire::class,
+            config('filament-questionnaire-builder.tables.questionnaires.name') . "_id",
+            'id',
+        );
     }
 }
